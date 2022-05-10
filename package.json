@@ -11,5 +11,8 @@
     "passport": "^0.5.2",
     "passport-auth0": "^1.4.2",
     "sequelize": "^6.19.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.4.1"
   }
 }

@@ -1,3 +1,4 @@
+const User = require('./user');
 const User = require('./User');
 const Hand = require('./Hand');
 const Log = require('./Log');
