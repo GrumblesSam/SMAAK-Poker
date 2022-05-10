@@ -4,8 +4,7 @@ const Poker = require('poker-ts');
 
 router.get('/table', (req, res) => {
     try{
-        console.log(table.seats());
-        console.log(table.holeCards());
+        res.json(table.holeCards());
     }
     catch (err) {
         console.log(err);
@@ -24,6 +23,7 @@ router.get('/', async(req, res) => {
 
 router.get('/makeTable', (req, res) => {
     table = new Poker.Table({ smallBlind: 50, bigBlind: 100 })
+    res.json(table.seats());
 });
 
 // router.post('loggedIn', (req, res) => {
