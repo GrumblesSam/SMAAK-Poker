@@ -1,5 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connections');
+const sequelize = require('../config/config');
 
 class Log extends Model {}
 
@@ -9,17 +9,17 @@ Log.init(
             type:DataTypes.INTEGER,
             allowNull: false,
             autoIncrement: true,
+            primaryKey: true,
         },
         round: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            autoIncrement: true,
         },
         hand_id: {
             type: DataTypes.INTEGER,
             reference: {
                 model: 'hand',
-                key: 'id',
+                key: 'hand_id',
             },
         },
         user_id: {
@@ -35,7 +35,7 @@ Log.init(
         sequelize,
         freezeTableName: true,
         undersscored: true,
-        modelName: 'hand',
+        modelName: 'log',
     }
 );
 

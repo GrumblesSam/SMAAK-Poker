@@ -1,5 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connections');
+const sequelize = require('../config/config');
 
 class Hand extends Model {}
 
