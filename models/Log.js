@@ -22,13 +22,13 @@ Log.init(
                 key: 'hand_id',
             },
         },
-        user_id: {
-            type: DataTypes.INTEGER,
-            reference: {
-                model: 'user',
-                key: 'user_id',
-            },
-        },
+        // user_id: {
+        //     type: DataTypes.INTEGER,
+        //     reference: {
+        //         model: 'user',
+        //         key: 'user_id',
+        //     },
+        // },
 
     },
     {

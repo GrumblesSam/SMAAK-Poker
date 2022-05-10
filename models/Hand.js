@@ -5,12 +5,19 @@ class Hand extends Model {}
 
 Hand.init(
     {
-        hand_id: {
+        id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
         },
+        // hand_id: {
+        //     type: DataTypes.INTEGER,
+        //     reference: {
+        //         model: 'log',
+        //         key: 'hand_id',
+        //     },
+        // },
         hand_val: {
             type: DataTypes.STRING,
             allowNull: false,

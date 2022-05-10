@@ -46,7 +46,7 @@ router.post('/logout', (req, res) => {
 router.post('/create', async(req,res) => {
   console.log('post method') 
   try {
-        console.log('post method')
+        console.log('post method 2')
         const userData = await User.findOne({ where: { email: req.body.email } });
     
         if (userData) {
@@ -56,12 +56,13 @@ router.post('/create', async(req,res) => {
           return;
         }
         let user = await User.create(
-            Object.assign(req.body, { password: req.body.password })
+           req.body
           );
-          let data = await user.authorize();
-          return res.json(data);
+          // let data = await user.authorize();
+          return res.json(user);
     }
-    catch{
+    catch (e){
+      console.log(e);
         console.error('you messed up')
     }
 })
