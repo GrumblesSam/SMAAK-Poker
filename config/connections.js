@@ -12,7 +12,6 @@ require('dotenv').config();
 //   }
 // );
 
-module.exports = sequelize;
 let sequelize;
 
 if (process.env.JAWSDB_URL) {
