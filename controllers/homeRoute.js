@@ -4,10 +4,10 @@ const { User } = require('../models');
 router.get('/', async(req, res) => {
     try{
         console.log('hi')
-        return {name: "koki"};
+        res.json( {name: "koki"});
     }
-    catch{
-        console.log('yo')
+    catch(e){
+        console.log(e);
     }
 })
 
