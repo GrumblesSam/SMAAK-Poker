@@ -36,6 +36,9 @@ User.init(
     seat: {
       type: DataTypes.INTEGER,
     },
+    chip: {
+      type: DataTypes.INTEGER,
+    },
   },
   {
     hooks: {
