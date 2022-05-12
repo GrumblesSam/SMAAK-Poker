@@ -29,6 +29,13 @@ Hand.init(
                 key: 'user_id',
             },
         },
+        card_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'card',
+                key: 'card_id',
+            },
+        },
 
     },
     {

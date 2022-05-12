@@ -1,6 +1,7 @@
 const User = require('./User');
 const Hand = require('./Hand');
 const Log = require('./Log');
+const Card = require('./Card');
 
 User.hasOne(Hand, {
     foreignKey: 'user_id',
@@ -29,4 +30,9 @@ Log.hasMany(Hand, {
 //     foreignKey: 'hand_id',
 // });
 
-module.exports = { User, Hand, Log };
+Hand.hasMany(Card, {
+    foreignKey: 'card_id',
+    onDelete: 'CASCADE',
+});
+
+module.exports = { User, Hand, Log, Card };
