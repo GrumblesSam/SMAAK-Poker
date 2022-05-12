@@ -1,6 +1,6 @@
 const path = require('path');
+const express = require('express');
 const session = require('express-session');
-// const express = require('express');
 const {User} = require('./models');
 const helpers = require('./utils/helpers');
 
