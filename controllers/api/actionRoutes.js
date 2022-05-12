@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Poker = require('poker-ts');
+const { Hand } = require('../../models');
 
 
 // end betting rounds
@@ -35,6 +36,31 @@ router.get('/adminTable', (req, res) => {
     res.json('admin hand started')
 });
 
+router.get('/adminTableCheck', (req, res) => {
+    table = new Poker.Table({ smallBlind: 50, bigBlind: 100 });
+    table.sitDown(0, 10000); // seat a player at seat 0 with 1000 chips buy-in
+    table.sitDown(2, 10000); // seat a player at seat 2 with 1500 chips buy-in
+    table.sitDown(5, 10000); // seat a player at seat 5 with 1700 chips buy-in
+    table.startHand();
+    res.json('admin hand started')
+    table.actionTaken('call');
+    table.actionTaken('call');
+    table.actionTaken('check');
+    table.endBettingRound();
+    table.actionTaken('check');
+    table.actionTaken('check');
+    table.actionTaken('check');
+    table.endBettingRound();
+    table.actionTaken('check');
+    table.actionTaken('check');
+    table.actionTaken('check');
+    table.endBettingRound();
+    table.actionTaken('check');
+    table.actionTaken('check');
+    table.actionTaken('check');
+    table.endBettingRound();
+});
+
 router.get('/makeTable', (req, res) => {
     table = new Poker.Table({ smallBlind: 50, bigBlind: 100 });
     res.json(table.seats());
@@ -43,27 +69,29 @@ router.get('/makeTable', (req, res) => {
 router.get('/startGame', (req, res) => {
     table.startHand();
     res.json('hand started');
-  });
-  router.get('/endRound', (req, res) => {
+});
+
+router.get('/endRound', (req, res) => {
     table.endBettingRound();
     res.status(200).json(table.roundOfBetting());
-  });
+});
 
-  router.get('/tableStatus', (req, res) => {
+router.get('/tableStatus', (req, res) => {
     console.log(table.seats());
     console.log(table.handPlayers());
     res.status(200).json(table.roundOfBetting());
-  });
+});
+
 router.get('/whatNext', (req, res) => {
     res.json([
         table.playerToAct(),
         table.roundOfBetting()
     ]);
-})
+});
 
 router.get('/tableCards', (req, res) => {
     res.json(table.communityCards());
-})
+});
 
 router.get('/winners', (req, res) => {
     res.json(table.winners());
@@ -87,7 +115,7 @@ router.get('/sitDown/:seat/:chips', (req, res) => {
 
     // add what seat we are to db
 
-
+    
     // if (req.session.logged_in) {
     //   //assign seat (choose)
     //   // can't join a hand in progress
@@ -96,15 +124,13 @@ router.get('/sitDown/:seat/:chips', (req, res) => {
     // } else {
     //   res.redirect('/login').end();
     // }
-
-
   });
 
 router.get('/whatRound', (req,res) => {
     res.status(200).json(table.roundOfBetting());
 })
 
-router.get('/showdown', (req, res) => {
+router.post('/showdown', async (req, res) => {
 
     if (!table.areBettingRoundsCompleted())
         {table.endBettingRound();};
@@ -123,7 +149,23 @@ router.get('/showdown', (req, res) => {
         console.log(cards);
     }
         table.showdown();
-        res.json(table.winners());
+
+        // console.log(table.winners());
+
+        // console.log(table.winners(1));
+        // console.log(table.winners().cards);
+        // console.log(table.winners()[0][0][1].cards);
+        // console.log(JSON.stringify(table.winners()[0][0][1].cards));
+        // let data = user id, hand, pot amount
+        try {
+            const dbWinnerData = await Hand.create({
+                hand_val: JSON.stringify(table.winners()[0][0][1].cards),
+            });
+            res.status(200).json(dbWinnerData);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
         console.log(table.seats());
 });
 // some kind of win before showdown

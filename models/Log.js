@@ -19,7 +19,7 @@ Log.init(
             type: DataTypes.INTEGER,
             reference: {
                 model: 'hand',
-                key: 'hand_id',
+                key: 'id',
             },
         },
         // user_id: {

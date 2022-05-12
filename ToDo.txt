@@ -46,3 +46,21 @@ log?
 
 if one player is left, showdown()
 automatic actions
+
+
+get routes for game
+	makeTable
+	sitDown (at least 2)
+	startGame
+	action calls
+		check, fold, etc
+	newRound (flop)
+	action calls
+		check, fold, etc
+	newRound (turn)
+	action calls
+		check, fold, etc
+	newRound (river)
+	action calls
+		check, fold, etc
+	showdown
