@@ -1,7 +1,28 @@
 const router = require('express').Router();
 const Poker = require('poker-ts');
 
+
 // end betting rounds
+
+function activePlayers(arr){
+    const res=[];
+    for(let i=0;i<arr.length;i++){
+        if(arr[i]!==null)
+            res.push(i);
+    }
+    console.log(res)
+    return res;
+};
+
+function getHand(i){
+    const res=[];
+    for(let i=0;i<arr.length;i++){
+        if(arr[i]!==null)
+            res.push(i);
+    }
+    console.log(res)
+    return JSON.stringify(res);
+}
 
 router.get('/table', (req, res) => {
     try{
@@ -33,13 +54,21 @@ router.get('/startGame', (req, res) => {
     table.startHand();
     res.json('hand started');
   });
+  router.get('/endRound', (req, res) => {
+    table.endBettingRound();
+    res.status(200).json(table.roundOfBetting());
+  });
 
+  router.get('/tableStatus', (req, res) => {
+    console.log(table.seats());
+    console.log(table.handPlayers());
+    res.status(200).json(table.roundOfBetting());
+  });
 router.get('/whatNext', (req, res) => {
     res.json([
         table.playerToAct(),
         table.roundOfBetting()
     ]);
-
 })
 
 router.get('/tableCards', (req, res) => {
@@ -48,6 +77,12 @@ router.get('/tableCards', (req, res) => {
 
 router.get('/winners', (req, res) => {
     res.json(table.winners());
+})
+
+router.get('/progress', (req, res) => {
+    console.log(table.isBettingRoundInProgress());
+    console.log(table.isHandInProgress());
+    res.json('check log');
 })
 
 router.get('/sitDown/:seat/:chips', (req, res) => {
@@ -75,29 +110,50 @@ router.get('/sitDown/:seat/:chips', (req, res) => {
 
   });
 
-router.get('/showdown', (req, res) => {
-    if (table.numActivePlayers()===1) {
-        table.showdown();
-    } else {
-        res.json('no winner yet');
-    }
-});
+router.get('/whatRound', (req,res) => {
+    res.status(200).json(table.roundOfBetting());
+})
 
+router.get('/showdown', (req, res) => {
+
+    if (!table.areBettingRoundsCompleted())
+        {table.endBettingRound();};
+
+        console.log(activePlayers(table.handPlayers()));
+
+        table.showdown();
+        res.json(table.winners());
+        console.log(table.seats());
+});
+// some kind of win before showdown
 router.get('/newRound', (req,res) => {
-    table.endBettingRound();
+    
     if (table.numActivePlayers()===1 && table.isHandInProgress()) {
+        let winner = table.handPlayers()[table.playerToAct()];
+        console.log(table.handPlayers()[table.playerToAct()]);
+        console.log(table.holeCards()[table.playerToAct()]);
+        console.log(table.communityCards());
         console.log(table.pots());
         console.log(table.roundOfBetting());
         console.log(table.isBettingRoundInProgress());
-        table.showdown();
+        table.endBettingRound();
 
+        // while (table.isHandInProgress()) {            
+        //     table.endBettingRound();
+        //     if (table.areBettingRoundsCompleted()) {
+        //       table.showdown();
+        //       res.json(table.winners());
+        //     };
+        //   };
+
+        table.showdown();
+        
         console.log(table.seats());
-        res.status(200).json(table.winners());
+        res.json(winner);
+        return;
     }
-    else{
-        res.status(200).json(table.roundOfBetting());
-    }
-    
+    table.endBettingRound();
+    res.status(200).json(table.roundOfBetting());
 })
 
 router.get('/call/:seat', (req, res) => {
