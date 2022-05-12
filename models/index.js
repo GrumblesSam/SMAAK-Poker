@@ -1,4 +1,4 @@
-const User = require('./User');
+const User = require('./user');
 const Hand = require('./Hand');
 const Log = require('./Log');
 const Card = require('./Card');
@@ -17,6 +17,10 @@ Log.hasMany(Hand, {
     onDelete: 'CASCADE',
 });
 
+// Hand.hasMany(Card, {
+//     foreignKey: 'card_id',
+//     onDelete: 'CASCADE',
+// });
 // Log.hasMany(User, {
 //     foreignKey: 'user_id',
 //     onDelete: 'CASCADE',
@@ -30,9 +34,5 @@ Log.hasMany(Hand, {
 //     foreignKey: 'hand_id',
 // });
 
-Hand.hasMany(Card, {
-    foreignKey: 'card_id',
-    onDelete: 'CASCADE',
-});
 
 module.exports = { User, Hand, Log, Card };

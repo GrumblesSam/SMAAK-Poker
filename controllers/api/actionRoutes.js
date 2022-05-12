@@ -14,16 +14,6 @@ function activePlayers(arr){
     return res;
 };
 
-function getHand(i){
-    const res=[];
-    for(let i=0;i<arr.length;i++){
-        if(arr[i]!==null)
-            res.push(i);
-    }
-    console.log(res)
-    return JSON.stringify(res);
-}
-
 router.get('/table', (req, res) => {
     try{
         let holeCards = table.holeCards();
@@ -120,7 +110,18 @@ router.get('/showdown', (req, res) => {
         {table.endBettingRound();};
 
         console.log(activePlayers(table.handPlayers()));
+        
+    if (table.numActivePlayers()===1) {
+        let handCards = table.holeCards()[activePlayers(table.handPlayers())[0]]
 
+        let cards = table.communityCards();
+        console.log(table.communityCards());
+        let card1=handCards[0];
+        let card2=handCards[1];
+        cards.push(card1);
+        cards.push(card2);
+        console.log(cards);
+    }
         table.showdown();
         res.json(table.winners());
         console.log(table.seats());
